@@ -9,10 +9,10 @@
     Defines Oracle Stars Production or Maintenance Mode
   
 .EXAMPLE
-    PS> .\Set-Oracle-Stars-IIS-Maintenance-Mode.ps1 -location Production
+    PS> .\Start-Stop-Remote-IIS-Sites.ps1 -location Production
 
 .NOTES
-    Filename: Set-Oracle-Stars-IIS-Maintenance-Mode.ps1
+    Filename: Start-Stop-Remote-IIS-Sites.ps1
     Author: Thomas Butterfield
     Modified date: 2022-08-08
     Version 1.0
