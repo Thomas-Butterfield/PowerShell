@@ -27,7 +27,7 @@ function Get-GitLabUsers{
     $RecordsPerPage = [int]$response.Headers["X-Per-Page"]
 
     $pages = @()
-    1..$pageCount | %{
+    1..$pageCount | ForEach-Object{
         $page = $_
         $pages += New-Object PSObject -Property @{
             "Number"     = $page
@@ -40,13 +40,13 @@ function Get-GitLabUsers{
         
     foreach($page in $pages){
         Start-Job -Name $page.Number -ScriptBlock { Invoke-RestMethod -Uri $args[0] -Method Get -Headers $args[1] -ContentType "application/json" -ErrorAction SilentlyContinue -WarningAction SilentlyContinue } -argumentlist $page.Uri,$headers | Out-Null
-        if( (Get-Job -State Running | measure).Count -ge $MaxJobs ){ Get-Job -State Running | Wait-Job -Any | Out-Null }
+        if( (Get-Job -State Running | Measure-Object).Count -ge $MaxJobs ){ Get-Job -State Running | Wait-Job -Any | Out-Null }
     }
 
     while(Get-Job){
             $complete = Get-Job | Wait-Job -Any
             foreach($job in $complete){
-                $page = $pages | WHERE Number -eq $job.name
+                $page = $pages | Where-Object Number -eq $job.name
                 if($job.State -eq "Completed" -and $job.HasMoreData -eq $true){
                 $page.Data = $job | Receive-Job
                 $page.Status = "Complete"
@@ -60,7 +60,7 @@ function Get-GitLabUsers{
                 }
                                 else{
                     $page.Status = "Retry"
-                    if( (Get-Job -State Running | measure).Count -ge $MaxJobs ){ Get-Job -State Running | Wait-Job -Any | Out-Null }
+                    if( (Get-Job -State Running | Measure-Object).Count -ge $MaxJobs ){ Get-Job -State Running | Wait-Job -Any | Out-Null }
                     Start-Job -Name $page.Number -ScriptBlock { Invoke-RestMethod -Uri $args[0] -Method Get -Headers $args[1] -ContentType "application/json" -ErrorAction SilentlyContinue -WarningAction SilentlyContinue } -argumentlist $page.Uri,$headers | Out-Null
                 }
             }      
@@ -70,4 +70,4 @@ function Get-GitLabUsers{
 }
 
 Write-Host "Saving List Of GitLab Users to C:\Temp\GitLabUsers.csv" -ForegroundColor Green
-$gitUsers = (Get-GitLabUsers).Data | Sort-Object -Property 'namespace_id' | Export-Csv -Path C:\Temp\GitLabUsers.csv -NoTypeInformation
+(Get-GitLabUsers).Data | Sort-Object -Property 'namespace_id' | Export-Csv -Path C:\Temp\GitLabUsers.csv -NoTypeInformation
