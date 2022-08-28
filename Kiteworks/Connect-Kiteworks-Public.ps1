@@ -73,7 +73,7 @@ function Get-Kiteworks-Token {
     }
 
     try {
-            $result = Invoke-RestMethod -Uri 'https://kiteworksServer/oauth/token' -Method Post -Body $reqBody -Headers $reqHeader
+            $result = Invoke-RestMethod -Uri '$kiteworksServer/oauth/token' -Method Post -Body $reqBody -Headers $reqHeader
     }
     catch {
         
@@ -86,7 +86,7 @@ function Get-Kiteworks-Token {
             
     }
 
-    return $token = $result.access_token
+    return $result.access_token
     
 }
 
