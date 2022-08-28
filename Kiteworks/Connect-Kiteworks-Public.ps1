@@ -96,8 +96,6 @@ If ($token){
 
     Write-Host "OAuth Token = $token" -ForegroundColor Magenta
     Start-Sleep -Seconds 2
-    Write-Host "Testing new token, attempting to load user profiles list" -ForegroundColor Cyan
-    Start-Sleep -Seconds 2
     
     $authorizedheader = @{
     
@@ -107,9 +105,9 @@ If ($token){
 
     }
 
-    $getProfiles = Invoke-RestMethod -Headers $authorizedheader -Method Get -Uri "$kiteworksServer/rest/profiles"
+    $getMyUser = Invoke-RestMethod -Headers $authorizedheader -Method Get -Uri "$kiteworksServer/rest/users/me"
     
-    If ($getProfiles.data){Write-Host "API Connected Sucessfully" -ForegroundColor Green}
+    If ($getMyUser.data){Write-Host "API Connected Sucessfully" -ForegroundColor Green}
 
 }
 
