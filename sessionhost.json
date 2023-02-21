@@ -32,7 +32,7 @@
       "type": "object"
     },
     "SigId": {
-      "type": "object"
+      "type": "string"
     },
     "AdminPassword": {
       "type": "secureString"
