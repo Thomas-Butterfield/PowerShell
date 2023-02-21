@@ -28,7 +28,10 @@
     "AdminUsername": {
       "type": "string"
     },
-        "imageReference": {
+    "imageReference": {
+      "type": "object"
+    },
+    "SigId": {
       "type": "object"
     },
     "AdminPassword": {
@@ -175,7 +178,7 @@
             "createOption": "FromImage",
             "deleteOption": "Delete"
           },
-          "imageReference": "[parameters('imageReference.SigId')]"
+          "imageReference": "[parameters('SigId')]"
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
