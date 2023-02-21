@@ -28,6 +28,9 @@
     "AdminUsername": {
       "type": "string"
     },
+        "imageReference": {
+      "type": "object"
+    },
     "AdminPassword": {
       "type": "secureString"
     },
@@ -172,7 +175,7 @@
             "createOption": "FromImage",
             "deleteOption": "Delete"
           },
-          "imageReference": "/subscriptions/98e127c8-bc4b-4cc4-9646-0f2b59c31d0d/resourceGroups/rg-us1-hdmc-prd-vdi-avdshared/providers/Microsoft.Compute/galleries/simgus1prdavdimages01/images/Windows11AVDCPT"
+          "imageReference": "[parameters('imageReference.SigId')]"
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
