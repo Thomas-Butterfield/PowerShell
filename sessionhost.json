@@ -175,7 +175,10 @@
             "createOption": "FromImage",
             "deleteOption": "Delete"
           },
-          "imageReference": "[resourceId(/subscriptions/98e127c8-bc4b-4cc4-9646-0f2b59c31d0d/resourceGroups/rg-us1-hdmc-prd-vdi-avdshared/providers/Microsoft.Compute/galleries/simgus1prdavdimages01/images/Windows11AVDCPT)]"
+          "imageReference": {
+            "id": "/subscriptions/98e127c8-bc4b-4cc4-9646-0f2b59c31d0d/resourceGroups/rg-us1-hdmc-prd-vdi-avdshared/providers/Microsoft.Compute/galleries/simgus1prdavdimages01/images/Windows11AVDCPT",
+            "sharedGalleryImageId": "/subscriptions/98e127c8-bc4b-4cc4-9646-0f2b59c31d0d/resourceGroups/rg-us1-hdmc-prd-vdi-avdshared/providers/Microsoft.Compute/galleries/simgus1prdavdimages01"
+          }
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
