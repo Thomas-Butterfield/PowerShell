@@ -38,9 +38,6 @@
       "type": "object",
       "defaultValue": {}
     },
-    "imageReference": {
-      "type": "object"
-    },
     "HostPoolName": {
       "type": "string"
     },
