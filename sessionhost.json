@@ -31,9 +31,6 @@
     "imageReference": {
       "type": "object"
     },
-    "SigId": {
-      "type": "string"
-    },
     "AdminPassword": {
       "type": "secureString"
     },
@@ -178,7 +175,7 @@
             "createOption": "FromImage",
             "deleteOption": "Delete"
           },
-          "imageReference": "[parameters('SigId')]"
+          "imageReference": "[parameters('imageReference').SigId]"
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
