@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.14.46.61228",
-      "templateHash": "14268669176997947284"
+      "templateHash": "476180026534489473"
     }
   },
   "parameters": {
@@ -135,7 +135,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2022-07-01",
       "name": "[format('{0}-vNIC', parameters('VMName'))]",
-      "location": "[format('{0}', pickZones('Microsoft.Compute', 'virtualMachines', parameters('Location')))]",
+      "location": "[parameters('Location')]",
       "properties": {
         "ipConfigurations": [
           {
@@ -155,8 +155,11 @@
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2022-08-01",
       "name": "[parameters('VMName')]",
-      "location": "[format('{0}', pickZones('Microsoft.Compute', 'virtualMachines', parameters('Location')))]",
+      "location": "[parameters('Location')]",
       "identity": "[if(equals(parameters('DomainJoinObject').DomainType, 'AzureActiveDirectory'), createObject('type', 'SystemAssigned'), null())]",
+      "zones": [
+        "[format('{0}', pickZones('Microsoft.Compute', 'virtualMachines', parameters('Location')))]"
+      ],
       "properties": {
         "osProfile": {
           "computerName": "[parameters('VMName')]",
@@ -199,11 +202,5 @@
         "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-vNIC', parameters('VMName')))]"
       ]
     }
-  ],
-  "outputs": {
-    "supported": {
-      "type": "array",
-      "value": "[pickZones('Microsoft.Compute', 'virtualMachines', 'westus2')]"
-    }
-  }
+  ]
 }
