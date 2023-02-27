@@ -4,8 +4,8 @@
   "metadata": {
     "_generator": {
       "name": "bicep",
-      "version": "0.13.1.58284",
-      "templateHash": "12908044377873838010"
+      "version": "0.14.46.61228",
+      "templateHash": "14268669176997947284"
     }
   },
   "parameters": {
@@ -28,11 +28,8 @@
     "AdminUsername": {
       "type": "string"
     },
-    "imageReference": {
-      "type": "object"
-    },
     "AdminPassword": {
-      "type": "secureString"
+      "type": "securestring"
     },
     "AcceleratedNetworking": {
       "type": "bool"
@@ -41,11 +38,14 @@
       "type": "object",
       "defaultValue": {}
     },
+    "imageReference": {
+      "type": "object"
+    },
     "HostPoolName": {
       "type": "string"
     },
     "HostPoolToken": {
-      "type": "secureString"
+      "type": "securestring"
     },
     "WVDArtifactsURL": {
       "type": "string",
@@ -55,7 +55,7 @@
       "type": "object"
     },
     "DomainJoinPassword": {
-      "type": "secureString",
+      "type": "securestring",
       "defaultValue": ""
     }
   },
@@ -135,7 +135,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "apiVersion": "2022-07-01",
       "name": "[format('{0}-vNIC', parameters('VMName'))]",
-      "location": "[parameters('Location')]",
+      "location": "[format('{0}', pickZones('Microsoft.Compute', 'virtualMachines', parameters('Location')))]",
       "properties": {
         "ipConfigurations": [
           {
@@ -155,7 +155,7 @@
       "type": "Microsoft.Compute/virtualMachines",
       "apiVersion": "2022-08-01",
       "name": "[parameters('VMName')]",
-      "location": "[parameters('Location')]",
+      "location": "[format('{0}', pickZones('Microsoft.Compute', 'virtualMachines', parameters('Location')))]",
       "identity": "[if(equals(parameters('DomainJoinObject').DomainType, 'AzureActiveDirectory'), createObject('type', 'SystemAssigned'), null())]",
       "properties": {
         "osProfile": {
@@ -175,9 +175,7 @@
             "createOption": "FromImage",
             "deleteOption": "Delete"
           },
-          "imageReference": {
-            "id": "/subscriptions/98e127c8-bc4b-4cc4-9646-0f2b59c31d0d/resourceGroups/rg-us1-hdmc-prd-vdi-avdshared/providers/Microsoft.Compute/galleries/simgus1prdavdimages01/images/Windows11AVDCPT"
-          }
+          "imageReference": "[parameters('imageReference')]"
         },
         "diagnosticsProfile": {
           "bootDiagnostics": {
@@ -201,5 +199,11 @@
         "[resourceId('Microsoft.Network/networkInterfaces', format('{0}-vNIC', parameters('VMName')))]"
       ]
     }
-  ]
+  ],
+  "outputs": {
+    "supported": {
+      "type": "array",
+      "value": "[pickZones('Microsoft.Compute', 'virtualMachines', 'westus2')]"
+    }
+  }
 }
